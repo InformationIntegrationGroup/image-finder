@@ -9,9 +9,9 @@ import com.isi.image.io.ImageReader;
 import com.isi.image.metadata.ImageMetaData;
 
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.telephony.TelephonyManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -20,45 +20,45 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.os.Build;
-import android.provider.MediaStore;
 
 public class Main extends ActionBarActivity {
 
-	private PhotosObserver instUploadObserver= new PhotosObserver(getApplicationContext());
-	private String saved;
-	TextView tv;
+	//private PhotosObserver instUploadObserver= new PhotosObserver(getApplicationContext());
+	//private String saved;
+	//TextView tv;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_main);
 
-		tv = (TextView) findViewById(R.id.tv);
+		//tv = (TextView) findViewById(R.id.tv);
 		
-		this.getApplicationContext().getContentResolver()
-		.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
-				false, instUploadObserver);
+		//this.getApplicationContext().getContentResolver()
+		//.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
+			//	false, instUploadObserver);
 		
-		Log.d("INSTANT", "registered content observer");
+		Intent intent = new Intent(this.getApplicationContext(), ImageFinderService.class);
+		startService(intent);
+		
+		Log.d("SERVICE", "starting service");
 	}
 
-	@Override
-	public void onResume() {
-			super.onResume();
-			if (saved != null) {
-				tv.setText(saved);
-			}
-}
+	//@Override
+	//public void onResume() {
+		//	super.onResume();
+			//if (saved != null) {
+				//tv.setText(saved);
+		//	}
+	//}
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		this.getApplicationContext().getContentResolver()
-		.unregisterContentObserver(instUploadObserver);
-		Log.d("INSTANT", "unregistered content observer");
-}
+	//@Override
+	//public void onDestroy() {
+		//super.onDestroy();
+		//this.getApplicationContext().getContentResolver()
+		//.unregisterContentObserver(instUploadObserver);
+		//Log.d("INSTANT", "unregistered content observer");
+	//}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

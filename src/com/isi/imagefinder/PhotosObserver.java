@@ -19,7 +19,17 @@ public class PhotosObserver extends ContentObserver{
 	public PhotosObserver(Context context) 
 	{
 		super(null);
+		
 		this.applicationContext = context;
+		
+		if(context == null)
+		{
+			Log.d("NULL", "NUl is null");
+		}
+		else
+		{
+			this.applicationContext = context;
+		}
 	}
 	
 	@Override
@@ -29,8 +39,12 @@ public class PhotosObserver extends ContentObserver{
 		
 		Media media =  readFromMediaStore(applicationContext,
 		        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-		        //saved = "I detected " + media.file.getName();
-		        Log.d("INSTANT", "detected picture");
+		
+		//TODO do something useful instead of a Toast
+		//Toast.makeText(applicationContext, "New Image : " + media.getFile().getName(), Toast.LENGTH_LONG).show();
+		Log.d("New Image", media.getFile().getName());
+		
+		
 		
 	}
 	
