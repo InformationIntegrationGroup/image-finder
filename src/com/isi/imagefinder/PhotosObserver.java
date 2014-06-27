@@ -22,14 +22,6 @@ public class PhotosObserver extends ContentObserver{
 		
 		this.applicationContext = context;
 		
-		if(context == null)
-		{
-			Log.d("NULL", "NUl is null");
-		}
-		else
-		{
-			this.applicationContext = context;
-		}
 	}
 	
 	@Override
