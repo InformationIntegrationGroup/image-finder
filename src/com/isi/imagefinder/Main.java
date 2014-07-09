@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 public class Main extends ActionBarActivity {
 
@@ -41,6 +42,7 @@ public class Main extends ActionBarActivity {
 		Intent intent = new Intent(this.getApplicationContext(), ImageFinderService.class);
 		startService(intent);
 		
+		//Toast.makeText(getApplicationContext(), "SErvice started", Toast.LENGTH_LONG).show();
 		Log.d("SERVICE", "starting service");
 	}
 

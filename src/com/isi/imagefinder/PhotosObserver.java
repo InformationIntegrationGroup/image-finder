@@ -2,7 +2,10 @@ package com.isi.imagefinder;
 
 import java.io.File;
 
+import org.json.JSONException;
+
 import com.isi.image.Media;
+import com.isi.image.metadata.ImageMetaData;
 
 import android.content.Context;
 import android.database.ContentObserver;
@@ -11,10 +14,12 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
 import android.util.Log;
+import android.widget.Toast;
 
 public class PhotosObserver extends ContentObserver{
 	
 	Context applicationContext;
+	
 	
 	public PhotosObserver(Context context) 
 	{
@@ -32,9 +37,22 @@ public class PhotosObserver extends ContentObserver{
 		Media media =  readFromMediaStore(applicationContext,
 		        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 		
+				
 		//TODO do something useful instead of a Toast
 		//Toast.makeText(applicationContext, "New Image : " + media.getFile().getName(), Toast.LENGTH_LONG).show();
 		Log.d("New Image", media.getFile().getName());
+		
+		ImageMetaData imd = new ImageMetaData(media.getFile().getAbsolutePath());
+		try {
+			String json = imd.MetaDataJSON(imd);
+			
+			Log.d("JSON",json);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		
 		
 		
