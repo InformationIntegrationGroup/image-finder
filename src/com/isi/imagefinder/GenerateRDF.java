@@ -1,7 +1,9 @@
 package com.isi.imagefinder;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.OutputStream;
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -13,32 +15,34 @@ public class GenerateRDF extends AsyncTask<String, Void, Void> {
 	
 	HttpURLConnection urlCon;
 	URL url;
-	public final static String webServiceURL = "http://localhost:8080/rest/hello/world";
+	public final static String webServiceURL = "http://localhost:8080/rdf/metadata/images";
 	
 	@Override
 	protected Void doInBackground(String... params) 
 	{
 		try 
 		{
-			url = new URL(webServiceURL);
 			urlCon = (HttpURLConnection) url.openConnection();
 			
 			urlCon.setDoOutput(true); //its a POST request
 			
 			urlCon.setRequestMethod("POST"); //is not needed, but still...
 			
-			urlCon.setFixedLengthStreamingMode(params[0].getBytes().length);
+			urlCon.setRequestProperty("Content-Type", "text/plain");
 			
-			urlCon.setRequestProperty("Content-Type", "application/json");
 			
-			PrintWriter out = new PrintWriter(urlCon.getOutputStream());
+			//byte[] data = strJSON.getBytes("UTF-8");
+			urlCon.setFixedLengthStreamingMode(params[0].length());
 			
-			out.print(params[0]);
+			OutputStream os = urlCon.getOutputStream();
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
 			
-			out.close();
+			writer.write(params[0]);
+			writer.flush();
+			writer.close();
+			os.close();
 			
-			//InputStream is = new BufferedInputStream(urlCon.getInputStream());
-			//readStream(is);
+			urlCon.connect();
 			
 		} 
 		catch (MalformedURLException e) 
