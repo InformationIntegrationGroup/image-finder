@@ -47,6 +47,8 @@ public class PhotosObserver extends ContentObserver{
 			String json = imd.MetaDataJSON(imd);
 			
 			Log.d("JSON",json);
+			
+			new GenerateRDF().execute(json); //call the Async Task class 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
