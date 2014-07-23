@@ -20,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 public class Main extends ActionBarActivity {
 
@@ -122,7 +121,7 @@ public String GetPhoneNumberFromSim() {
 		
 		String root = Environment.getExternalStorageDirectory().getAbsolutePath() + "/DCIM/Camera/";
 		ArrayList<String> images = new ImageReader().ReadImageFiles(new File(root));
-		ImageMetaData imd = new ImageMetaData(images.get(354));
+		ImageMetaData imd = new ImageMetaData(images.get(354),getApplicationContext());
 		//Toast.makeText(getApplicationContext(), imd.getLatitude().toString(), Toast.LENGTH_LONG).show();
 		return imd.MetaDataJSON(imd);
 		

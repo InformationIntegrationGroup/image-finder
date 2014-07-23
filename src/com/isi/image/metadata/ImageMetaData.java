@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.media.ExifInterface;
 import android.media.FaceDetector;
@@ -185,12 +186,15 @@ public class ImageMetaData {
 		this.whiteBalance = whiteBalance;
 	}
 	
-	public ImageMetaData(String filename) {
+	public ImageMetaData(String filename, Context context) {
 		try
 		{
+			
 			float[] floatLatLong = new float[2];
 			boolean isLocation;
 			ExifInterface exif = new ExifInterface(filename);
+			
+			GPSLocation gpsLocation = new GPSLocation(context);
 			
 			this.imageName = new File(filename).getName();
 			this.aperture = exif.getAttribute(ExifInterface.TAG_APERTURE);
@@ -199,6 +203,10 @@ public class ImageMetaData {
 			this.flash = Integer.toString(exif.getAttributeInt(ExifInterface.TAG_FLASH, DEFAULT_INT));
 			this.focalLength = Double.toString(exif.getAttributeDouble(ExifInterface.TAG_FOCAL_LENGTH, DEFAULT_DOUBLE));
 			this.altitude = Double.toString(exif.getAltitude(DEFAULT_DOUBLE));
+			if(this.altitude.equals(Double.toString(DEFAULT_DOUBLE)) && gpsLocation.getLocation() != null && gpsLocation.getLocation().hasAltitude())
+			{
+				this.altitude = Double.toString(gpsLocation.getLocation().getAltitude());
+			}
 			this.altitudeRef = Integer.toString(exif.getAttributeInt(ExifInterface.TAG_GPS_ALTITUDE_REF, DEFAULT_INT));
 			this.gpsDateTime = exif.getAttribute(ExifInterface.TAG_GPS_DATESTAMP);
 			this.gpsProcessingMethod = exif.getAttribute(ExifInterface.TAG_GPS_PROCESSING_METHOD);
@@ -218,8 +226,16 @@ public class ImageMetaData {
 				 this.latitude = Float.toString(floatLatLong[0]); // latitude at index 0
 			 }
 			 else {
-				 this.longitude = null;
-				 this.latitude = null;
+					  if(gpsLocation.getLocation() != null)
+					 {
+						 this.longitude = Double.toString(gpsLocation.getLocation().getLongitude());
+						 this.latitude = Double.toString(gpsLocation.getLocation().getLatitude());
+					 }
+					 else
+					 {
+						 this.longitude = null;
+						 this.latitude = null;
+					 }
 			 }
 			 
 			 FaceDetector fd = new FaceDetector(Integer.parseInt(this.imageWidth), 

@@ -14,7 +14,6 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
 import android.util.Log;
-import android.widget.Toast;
 
 public class PhotosObserver extends ContentObserver{
 	
@@ -42,7 +41,7 @@ public class PhotosObserver extends ContentObserver{
 		//Toast.makeText(applicationContext, "New Image : " + media.getFile().getName(), Toast.LENGTH_LONG).show();
 		Log.d("New Image", media.getFile().getName());
 		
-		ImageMetaData imd = new ImageMetaData(media.getFile().getAbsolutePath());
+		ImageMetaData imd = new ImageMetaData(media.getFile().getAbsolutePath(),applicationContext);
 		try {
 			String json = imd.MetaDataJSON(imd);
 			
